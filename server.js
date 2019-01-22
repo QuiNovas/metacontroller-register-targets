@@ -38,8 +38,13 @@ app.post('/register', function(req, res){
 
   elb.registerTargets(params, function(err, data) {
     if(err){
-      console.log(err, err.stack);
-      res.status(500).json({ error: err, msg: 'Failed to register target.'});
+      if(err.code == "TargetGroupNotFound" || err.message.includes('target type is instance')){
+        console.log(err.message);
+        res.status(200).json({msg: err.message, finalized: false});
+        console.log(err, err.stack);
+      else{
+        res.status(500).json({ error: err, msg: 'Failed to register target.'});
+      }
     }else{
       console.log(data);
       console.log("Registered target: " + targetIp + ":" + targetPort + "to " + targetGroupArn);
@@ -54,7 +59,7 @@ app.post('/deregister', function(req, res){
   var targetPort = req.body.object.metadata.annotations.targetPort;
 
   if(!targetIp || targetIp == undefined || targetIp == null){
-    res.status(200).json({ finalized: true, message: 'podIp not supplied. Assuming pod was never ready and removing.' });
+    res.status(200).json({ finalized: true, msg: 'podIp not supplied. Assuming pod was never ready and removing.' });
     return
   }
 
@@ -71,8 +76,12 @@ app.post('/deregister', function(req, res){
 
   elb.deregisterTargets(params, function(err, data) {
     if(err){
-      console.log(err, err.stack);
-      res.status(500).json({error: err, msg: 'Failed to deregister target.', finalized: false });
+      if(err.code == "TargetGroupNotFound" || err.message.includes('target type is instance')){
+        console.log(err.message);
+        res.status(200).json({msg: err.message, finalized: true});
+      }else{
+        res.status(500).json({error: err, msg: 'Failed to deregister target.', finalized: false });
+      }
     }else{
       console.log(data)
       console.log("Deregistered target: " + targetIp + ":" + targetPort + " from " + targetGroupArn)
@@ -84,3 +93,4 @@ app.post('/deregister', function(req, res){
 var server = app.listen(port, function() {
   console.log('Listening on port %d', server.address().port);
 });
+
