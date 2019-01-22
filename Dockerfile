@@ -1,5 +1,5 @@
 FROM alpine:3.8
-LABEL maintainer="Mathew Moon <me@mathewmoon.net>"
+LABEL maintainer="Mathew Moon <mmoon@quinovas.com>"
 
 
 RUN mkdir /app
