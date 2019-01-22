@@ -80,7 +80,7 @@ spec:
 ```
 
 ### values.yaml
-```
+```yaml
 image: quinovas/metacontroller-register-targets:latest
 role: kube-register-targets # The role that allows metacontroller to register the targets
 region: us-east-1
