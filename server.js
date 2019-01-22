@@ -38,8 +38,13 @@ app.post('/register', function(req, res){
 
   elb.registerTargets(params, function(err, data) {
     if(err){
-      console.log(err, err.stack);
-      res.status(500).json({ error: err, msg: 'Failed to register target.'});
+      if(err.code == "TargetGroupNotFound" || err.message.includes('target type is instance')){
+        console.log(err.message);
+        res.status(200).json({msg: err.message, finalized: false});
+        console.log(err, err.stack);
+      }else{
+        res.status(500).json({ error: err, msg: 'Failed to register target.'});
+      }
     }else{
       console.log(data);
       console.log("Registered target: " + targetIp + ":" + targetPort + "to " + targetGroupArn);
