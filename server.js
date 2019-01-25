@@ -38,10 +38,10 @@ app.post('/register', function(req, res){
 
   elb.registerTargets(params, function(err, data) {
     if(err){
-      if(error.message == undefined){
+      if(err.message == undefined){
         console.log("undefined error:")
         console.log(err);
-        res.status(200).json({msg: err.message, finalized: true});
+        res.status(200).json({msg: err, finalized: false});
         return;
       }
       if(err.code == "TargetGroupNotFound" || err.message.includes('target type is instance')){
@@ -82,10 +82,10 @@ app.post('/deregister', function(req, res){
 
   elb.deregisterTargets(params, function(err, data) {
     if(err){
-      if(error.message == undefined){
+      if(err.message == undefined){
         console.log("undefined error:")
         console.log(err);
-        res.status(200).json({msg: err.message, finalized: true});
+        res.status(200).json({msg: err, finalized: true});
         return;
       }
       if(err.code == "TargetGroupNotFound" || err.message.includes('target type is instance')){
