@@ -19,7 +19,7 @@ app.post('/register', function(req, res){
 
   var targetGroupArn = req.body.object.metadata.annotations.targetGroupArn;
   var targetIp = req.body.object.status.podIP;
-  var targetPort = req.body.object.metadata.annotations.targetPort;
+  var targetPort = parseInt(req.body.object.metadata.annotations.targetPort);
 
   if(!targetIp || targetIp == undefined || targetIp == null){
     res.status(400).json({ error: 'podIp not ready.' });
@@ -56,7 +56,7 @@ app.post('/register', function(req, res){
 app.post('/deregister', function(req, res){
   var targetGroupArn = req.body.object.metadata.annotations.targetGroupArn;
   var targetIp = req.body.object.status.podIP;
-  var targetPort = req.body.object.metadata.annotations.targetPort;
+  var targetPort = parseInt(req.body.object.metadata.annotations.targetPort);
 
   if(!targetIp || targetIp == undefined || targetIp == null){
     res.status(200).json({ finalized: true, msg: 'podIp not supplied. Assuming pod was never ready and removing.' });
