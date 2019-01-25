@@ -42,7 +42,7 @@ app.post('/register', function(req, res){
         console.log(err.message);
         res.status(200).json({msg: err.message, finalized: false});
         console.log(err, err.stack);
-      else{
+      }else{
         res.status(500).json({ error: err, msg: 'Failed to register target.'});
       }
     }else{
