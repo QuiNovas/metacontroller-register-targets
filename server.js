@@ -74,7 +74,6 @@ app.post('/deregister', function(req, res){
     Targets: [
         {
         Id: targetIp,
-        AvailabilityZone: 'all',
         Port: targetPort
       },
     ]
